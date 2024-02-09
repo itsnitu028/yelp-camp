@@ -1,0 +1,53 @@
+<% layout('layouts/boilerplate.ejs') %>
+<div id="map" style='width: 100%;height:300px; margin-bottom: 10px;'></div>
+<h1>All Campgrounds</h1>
+    <div>
+        <a href="/campground/new">Add Campground</a>
+    </div>
+    <ul>
+        <% for( let campground of campgrounds) { %>
+           <div class="card mb-3">
+            <div class="row">
+                <div class="col-md-4">
+                    <%if(campground.images.length) {%>
+                    <img src="<%=campground.images[0].url%>" alt="" class="img-fluid">
+                    <%} else {%>
+                    <img src="" alt="" class="img-fluid">
+                   <% }%>
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <%=campground.title%>
+                        </h5>
+                        <p class="card-text"><%=campground.description%></p>
+                        <p class="card-text">
+                            <small class="text-muted"><%= campground.location %></small>
+                        </p>
+                        <a href="/campground/<%=campground._id%>" class="btn btn-primary">View page</a>
+                    </div>
+                </div>
+            </div>
+           </div>
+            <% } %>
+    </ul>
+    <script>
+        let map;
+    async function initMap() {
+      map = L.map('map').setView([0, 0], 35);
+          const marker = L.marker([  28.70405920, 77.10249020]).addTo(map);
+          map.setView([28.70405920,77.10249020 ], 35);
+          var Stadia_AlidadeSmoothDark = L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.{ext}', {
+	minZoom: 0,
+	maxZoom: 20,
+	attribution: '&copy; <a href="https://www.stadiamaps.com/" target="_blank">Stadia Maps</a> &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+	ext: 'png'
+});
+       Stadia_AlidadeSmoothDark.addTo(map);
+      
+     
+    }
+    document.addEventListener('DOMContentLoaded', function () {
+      initMap();
+    });
+      </script>
